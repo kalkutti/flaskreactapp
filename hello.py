@@ -1,5 +1,5 @@
 import time
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -22,4 +22,11 @@ def get_current_time():
 
 @app.route('/api/cal', methods=['POST'])
 def get_cal():
-    return 'jerk'
+    data = request.get_json()
+    new_user_string = UserString(
+        userString = data["userString"],
+        searchString = data["searchString"]
+    )
+    db.session.add(new_user_string)
+    db.session.commit()
+    return jsonify({"message": "Strings were added to database"}), 200
