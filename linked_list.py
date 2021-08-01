@@ -4,7 +4,7 @@ class Node:
         self.next_node = next_node
 
 
-class LinkedList:
+class LinkedList(object):
     def __init__(self):
         self.head = None
         self.last_node = None
