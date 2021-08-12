@@ -16,8 +16,6 @@ const MapDetails = (Props) => {
         <div>
         <h3> {blog.name} </h3>
         <p>{blog.description}</p>
-        <hr />
-        <h4>{blog.status}</h4>
         </div>
       );
     }
