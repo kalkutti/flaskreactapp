@@ -14,6 +14,9 @@ class UserString(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userString = db.Column(db.String(30))
     searchString = db.Column(db.String(30))
+    deadline = db.Column(db.Date)
+    duration = db.Column(db.Integer)
+    price = db.Column(db.Integer)
 
 @app.route('/api/time')
 def get_current_time():
@@ -25,7 +28,10 @@ def get_cal():
     data = request.get_json()
     new_user_string = UserString(
         userString = data["userString"],
-        searchString = data["searchString"]
+        searchString = data["searchString"],
+        deadline = data["selectedDate"],
+        duration = data["durationValue"],
+        price = data["priceValue"],
     )
     db.session.add(new_user_string)
     db.session.commit()
