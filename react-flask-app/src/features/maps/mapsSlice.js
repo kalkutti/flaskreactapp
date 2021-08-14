@@ -12,7 +12,7 @@ const initialState = mapsAdapter.getInitialState({
 export const getMaps = createAsyncThunk(
     "maps/getMaps",
     async () => {
-        const response = await fetch("https://jsonplaceholder.typicode.com/todos").then((res) => res.json());
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos').then((res) => res.json());
         return response
     }
 );
