@@ -23,8 +23,12 @@ class UserString(db.Model):
 
 @app.route('/api/time')
 def get_current_time():
-    list_of_userString = generate_schedule()
-    return {'time': list_of_userString}#now.strftime("%H:%M:%S")}
+    return { 'time' : now.strftime("%H:%M:%S")}
+
+@app.route('/api/activities')
+def get_activities():
+    dict_of_userString = jsonify(generate_schedule())
+    return dict_of_userString
 
 
 @app.route('/api/cal', methods=['POST'])
@@ -42,19 +46,20 @@ def get_cal():
     return jsonify({"message": "Strings were added to database"}), 200
 
 def generate_schedule():
-    date_forward_week = today + timedelta(days=7)
+    date_forward_week = today + timedelta(days=14)
     str_date_forward_week = getStringDate(date_forward_week)
     event_pts = UserString.query.filter(UserString.deadline >= str_date_forward_week).all()
     
-    dofdate = {}
-    new_date = None
+    dofdate = []
+    new_date = today + timedelta(days=7)
 
     for x in range(6):
         itm = []
         if event_pts:
-            new_date = date_forward_week + timedelta(days=x)
+            new_date = new_date + timedelta(days=x)
             itm = calschedule.generate(event_pts, 8)
-            dofdate[getStringDate(new_date)] = itm
+            print(list(map( lambda i: event_pts[i].userString, itm)))
+            list(map(lambda n: dofdate.append(dict(zip(['id', 'date'], [event_pts[n].id, getStringDate(new_date)]))), itm))
 
         for i in reversed(itm):
             del event_pts[i]
