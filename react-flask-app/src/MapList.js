@@ -2,6 +2,36 @@ import { selectAllActivities, getActivities } from "./features/maps/activitiesSl
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
+let ViewDate = (activities) => {
+    const nact = activities.length
+    let initDate = activities[0].date
+    let indexSta = 0
+    let act
+
+    while (indexSta < nact) {
+        console.log(activities[indexSta].date)
+        for (; indexSta < nact; indexSta++) {
+            act = activities[indexSta]
+            if (act.date === initDate) {
+                // add a view for current date
+                console.log(activities[indexSta].id)
+            }
+            else {
+                initDate = act.date
+                break
+            }
+        }
+    }
+}
+
+let GroupViewDate = ({iDate}) => {
+    return (
+        <div>
+            <h3>{iDate}</h3>
+        </div>
+    );
+}
+
 const MapList = () => {
     const activities = useSelector(selectAllActivities)
     const activityStatus = useSelector((state) => state.activities.status)
@@ -19,9 +49,12 @@ const MapList = () => {
     if (activityStatus === 'loading') {
         content = <div className="loader">Loading...</div>
     } else if (activityStatus === 'succeeded') {
-        console.log(activities)
+        ViewDate(activities)
         content = activities.map((activity) => (
-            <ul key={activity.id}> {activity.id}</ul>
+            <div>
+                <GroupViewDate iDate={activity.date}/>
+                <ul key={activity.id}> {activity.id}</ul>
+            </div>
         ))
     } else if (activityStatus === 'failed') {
         content = <div>{error}</div>

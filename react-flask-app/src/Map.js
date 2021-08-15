@@ -4,6 +4,7 @@ import MapDetails from "./MapDetails";
 import { Link, Outlet, useRoutes } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAllMaps, getMaps, selectMapById, selectMapIds } from "./features/maps/mapsSlice";
+import { selectActivityById } from "./features/maps/activitiesSlice";
 import { useEffect } from "react";
 
 const Map = () => useRoutes([
@@ -18,13 +19,19 @@ const Map = () => useRoutes([
     }
 ])
 
+let SchldButton = ({ act }) => {
+  return <p>{act ? <button>{act.date}</button> : <button>Re-schedule</button>}</p>
+}
+
 let MapExcerpt = ({ mapId }) => {
     const map = useSelector((state) => selectMapById(state, mapId))
-  
+    const activity = useSelector((state) => selectActivityById(state, mapId))
+
     return (
       <article className="map-excerpt">
         <h3>{map.userId}</h3>
         <p>{map.title}</p>
+        <SchldButton act={activity}/>
       </article>
     )
   }
